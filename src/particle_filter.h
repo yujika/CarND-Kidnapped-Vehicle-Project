@@ -120,6 +120,9 @@ class ParticleFilter {
   
   // Vector of weights of all particles
   std::vector<double> weights; 
+
+  // landmark selection vector;
+  std::vector<LandmarkObs> landmarks;
 };
 
 #endif  // PARTICLE_FILTER_H_

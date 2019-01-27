@@ -127,8 +127,15 @@ int main() {
             weight_sum += particles[i].weight;
           }
 
-          std::cout << "highest w " << highest_weight << std::endl;
-          std::cout << "average w " << weight_sum/num_particles << std::endl;
+          std::cout << "highest w " << highest_weight << ", num_particles:" << num_particles<<std::endl;
+          std::cout << "average w " << weight_sum/num_particles << ", weight_sum=" << weight_sum << std::endl;
+	  if ( highest_weight < 0. ){
+	    for (int i = 0; i < num_particles; ++i) {
+	      std::cout << "particle["<<i<<"]="<<particles[i].weight<<std::endl;
+	    }
+	    exit(-1);
+	  }
+
 
           json msgJson;
           msgJson["best_particle_x"] = best_particle.x;
@@ -141,8 +148,14 @@ int main() {
           msgJson["best_particle_sense_x"] = pf.getSenseCoord(best_particle, "X");
           msgJson["best_particle_sense_y"] = pf.getSenseCoord(best_particle, "Y");
 
+	  // std::cout << "landmark["<<best_particle.associations[0]<<"]="
+	  // 	    << map.landmark_list[best_particle.associations[0]].id_i << ", "
+	  // 	    << map.landmark_list[best_particle.associations[0]].x_f
+	  // 	    << ", " 
+	  // 	    << map.landmark_list[best_particle.associations[0]].y_f
+	  // 	    << std::endl;
           auto msg = "42[\"best_particle\"," + msgJson.dump() + "]";
-          // std::cout << msg << std::endl;
+	  // std::cout << msg << std::endl;
           ws.send(msg.data(), msg.length(), uWS::OpCode::TEXT);
         }  // end "telemetry" if
       } else {
